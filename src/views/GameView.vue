@@ -47,11 +47,13 @@ function registerToCup() {
     <div class="flex-1 self-center flex flex-row w-full">
       <div class="flex flex-col self-center w-full">
         <div
-          class="self-center w-5/12 bg-black bg-opacity-70 text-xl rounded-xl p-4 mb-4 shadow-black shadow-xl"
+          class="self-center w-9/12 lg:w-5/12 bg-black bg-opacity-70 text-xl md:text-2xl rounded-xl p-4 mb-4 shadow-black shadow-xl"
         >
           Welcome {{ teamName }}. Select the competition you'd like to view.
         </div>
-        <div class="flex flex-row text-3xl self-center justify-between w-9/12">
+        <div
+          class="flex flex-row text-xl md:text-3xl self-center justify-between w-11/12"
+        >
           <div class="flex flex-col">
             <router-link to="/godcLeague">
               <button class="p-4 m-1 bg-black rounded-lg bg-opacity-70">

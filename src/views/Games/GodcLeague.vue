@@ -29,8 +29,10 @@ axios({
 <template>
   <main class="flex flex-col">
     <div class="flex-1 flex flex-col">
-      <table class="bg-black bg-opacity-70 w-10/12 self-center mt-5">
-        <thead class="font-extrabold">
+      <table
+        class="bg-black bg-opacity-70 w-10/12 self-center mt-5 text-xs md:text-base"
+      >
+        <thead class="font-bold">
           <tr>
             <th class="border p-1">POS</th>
             <th class="border p-1">TEAM</th>

@@ -2,7 +2,7 @@
 
 <template>
   <main class="flex flex-col">
-    <div class="flex-1 self-center flex flex-row w-5/12">
+    <div class="flex-1 self-center flex flex-row lg:w-5/12">
       <div class="self-center flex flex-col w-full bg-black bg-opacity-70">
         <div class="flex flex-row justify-evenly mt-5 p-2">
           <label for="email" class="text-4xl">Email:</label>
