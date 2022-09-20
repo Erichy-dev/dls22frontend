@@ -13,13 +13,6 @@ function updateProfile() {
         class="bg-black bg-opacity-70 self-center flex flex-col p-4 space-y-2 w-full"
       >
         <h2 class="self-center text-3xl">UPDATE ACCOUNT</h2>
-        <div class="w-6/12 self-center">
-          <img
-            src="/DLS.jpg"
-            alt="profile pic"
-            class="rounded-full border-white"
-          />
-        </div>
         <div class="flex flex-row justify-between">
           <label for="profile" class="mr-2">PROFILE</label>
           <input type="file" id="profile" />
