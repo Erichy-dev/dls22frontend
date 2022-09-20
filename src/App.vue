@@ -3,8 +3,17 @@ import { RouterView } from "vue-router";
 import BodyFooter from "./components/BodyFooter.vue";
 import BodyNav from "./components/BodyNav.vue";
 import axios from "axios";
+import { getCookie } from "./composables/cookies";
+import { UserStore } from "./stores/UserAccount";
 
 axios.defaults.baseURL = "http://127.0.0.1:8000/";
+
+if (getCookie("nt") !== null) {
+  const teamName = getCookie("nt");
+  UserStore().teamName = teamName as string;
+  UserStore().signedIn = true;
+}
+
 </script>
 
 <template>

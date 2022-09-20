@@ -2,11 +2,10 @@
 import GamesNavigator from "@/components/GamesNavigator.vue";
 import { UserStore } from "@/stores/UserAccount";
 import axios from "axios";
-import { ref, computed, watchEffect } from "vue";
+import { ref, computed, onMounted } from "vue";
 
 const teamName = computed(() => UserStore().teamName);
 const signedIn = computed(() => UserStore().signedIn);
-const registerCompetition = computed(() => UserStore().registerCompetition);
 const registerLeagueCompetition = computed(
   () => UserStore().registerLeagueCompetition
 );
@@ -14,14 +13,25 @@ const registerCupCompetition = computed(
   () => UserStore().registerCupCompetition
 );
 
-axios({
-  method: "get",
-  url: "leagueRegistration/",
-  params: {
-    teamName: teamName.value,
-  },
-}).then((res) => {
-  if (res.data !== "None") UserStore().registerLeagueCompetition = false;
+onMounted(() => {
+  axios({
+    method: "get",
+    url: "leagueRegistration/",
+    params: {
+      teamName: teamName.value,
+    },
+  }).then((res) => {
+    if (res.data !== "None") UserStore().registerLeagueCompetition = false;
+  });
+  axios({
+    method: "get",
+    url: "cupRegistration/",
+    params: {
+      teamName: teamName.value,
+    },
+  }).then((res) => {
+    if (res.data !== "None") UserStore().registerCupCompetition = false;
+  });
 });
 
 function registerToLeague() {
@@ -33,12 +43,26 @@ function registerToLeague() {
     data: fmData,
   })
     .then((res) => {
-      console.log(res.data);
+      if (res.data !== "None") UserStore().registerLeagueCompetition = false;
     })
     .catch();
 }
 function registerToCup() {
-  //
+  const fmData = new FormData();
+  fmData.append("teamName", teamName.value);
+  axios({
+    method: "post",
+    url: "cupRegistration/",
+    data: fmData,
+  })
+    .then((res) => {
+      if (res.data !== "None") UserStore().registerCupCompetition = false;
+    })
+    .catch();
+}
+function registerToBoth() {
+  registerToLeague();
+  registerToCup();
 }
 </script>
 
@@ -85,7 +109,8 @@ function registerToCup() {
         </div>
         <button
           class="border-slate-500 bg-cyan-700 bg-opacity-70 p-2 rounded-xl text-xl w-fit self-center m-4"
-          v-if="registerCompetition && signedIn"
+          v-if="registerCupCompetition && registerLeagueCompetition && signedIn"
+          @click="registerToBoth"
         >
           REGISTER BOTH
         </button>

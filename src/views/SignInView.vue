@@ -3,6 +3,7 @@ import axios from "axios";
 import { ref, type Ref } from "vue";
 import { useRouter } from "vue-router";
 import { UserStore } from "../stores/UserAccount";
+import { setCookie } from "@/composables/cookies";
 
 const form: Ref<HTMLFormElement | null> = ref(null);
 const navigate = useRouter();
@@ -19,6 +20,7 @@ function signIn() {
       if (res.data === "valid") {
         UserStore().teamName = teamName.value;
         UserStore().signedIn = true;
+        setCookie("nt", teamName.value, 0.25);
         navigate.push("/loggedIn");
       } else {
         invalid.value = true;
@@ -48,7 +50,9 @@ function forgotPassword() {
       >
         <h2 class="self-center text-3xl">SIGN IN</h2>
         <div class="flex flex-row justify-between">
-          <label for="teamName" class="flex-1 text-sm md:text-lg">Team Name</label>
+          <label for="teamName" class="flex-1 text-sm md:text-lg"
+            >Team Name</label
+          >
           <input
             type="text"
             required
@@ -58,7 +62,9 @@ function forgotPassword() {
           />
         </div>
         <div class="flex flex-row justify-between">
-          <label for="password" class="flex-1 text-sm md:text-lg">Password</label>
+          <label for="password" class="flex-1 text-sm md:text-lg"
+            >Password</label
+          >
           <input
             type="password"
             required

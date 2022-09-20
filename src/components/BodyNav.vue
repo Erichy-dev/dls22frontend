@@ -2,6 +2,7 @@
 import { UserStore } from "@/stores/UserAccount";
 import { computed, ref, onMounted } from "vue";
 import { MenuIcon } from "@heroicons/vue/solid";
+import { getCookie, setCookie } from "@/composables/cookies";
 
 const signedIn = computed(() => UserStore().signedIn);
 const teamName = computed(() => UserStore().teamName);
@@ -19,7 +20,7 @@ function toggleGuide() {
     toggleNavIf.value = false;
     setTimeout(() => {
       guide.value?.classList.remove(...guideClass);
-    }, 1000);
+    });
     checkGuide.value = true;
   }
 }
@@ -39,13 +40,19 @@ function outsideToggle(e: Event) {
       toggleNavIf.value = false;
       setTimeout(() => {
         (guide as HTMLElement).classList.remove(...guideClass);
-      }, 1000);
+      });
       checkGuide.value = true;
     }
   }
 }
 if (window.outerWidth >= 768) {
   toggleNavIf.value = true;
+}
+
+function signOut() {
+  UserStore().teamName = "";
+  UserStore().signedIn = false;
+  setCookie("nt", teamName.value, 0.5, true);
 }
 </script>
 
@@ -112,6 +119,13 @@ if (window.outerWidth >= 768) {
             class="p-1 hover:underline decoration-2 decoration-red-600 font-extrabold rounded-full bg-black bg-opacity-60 text-yellow-300"
           >
             {{ teamName }}
+          </button>
+        </router-link>
+        <router-link to="/signOut" @click="signOut">
+          <button
+            class="p-1 hover:underline decoration-2 decoration-red-600 font-extrabold rounded-full bg-black bg-opacity-60"
+          >
+            SIGN OUT
           </button>
         </router-link>
         <router-link to="/support">

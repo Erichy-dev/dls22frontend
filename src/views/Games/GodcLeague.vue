@@ -62,6 +62,11 @@ axios({
         </tbody>
       </table>
     </div>
+    <router-link to="/fixturesResults" class="self-center">
+      <button class="p-1 md:p-4 bg-white text-black rounded-lg bg-opacity-70">
+        FIXTURES
+      </button>
+    </router-link>
     <GamesNavigator />
   </main>
 </template>

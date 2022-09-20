@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import { UserStore } from "@/stores/UserAccount";
-import { ChevronDownIcon } from "@heroicons/vue/solid";
 
 const signedIn = computed(() => UserStore().signedIn);
 </script>

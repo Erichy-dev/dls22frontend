@@ -13,6 +13,10 @@ const appRoutes = [
     redirect: "/games",
   },
   {
+    path: "/signOut",
+    redirect: "/",
+  },
+  {
     path: "/games",
     name: "games",
     component: () => import("@/views/GameView.vue"),
