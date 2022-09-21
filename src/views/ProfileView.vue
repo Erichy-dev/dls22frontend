@@ -1,15 +1,33 @@
 <script lang="ts" setup>
 import { UserStore } from "@/stores/UserAccount";
 import axios from "axios";
-import { ref, type Ref } from "vue";
+import { onMounted, computed, ref, type Ref } from "vue";
 import { useRouter } from "vue-router";
 
 const navigate = useRouter();
 const form: Ref<HTMLFormElement | null> = ref(null);
+const teamName = computed(() => UserStore().teamName);
+interface User {
+  firstName: string;
+  lastName: string;
+  email: string;
+  city: string;
+}
+const userDetails: Ref<User | null> = ref(null);
+
+onMounted(() => {
+  const fmData = new FormData();
+  fmData.append("teamName", teamName.value);
+  axios({
+    method: "post",
+    url: "userDetails/",
+    data: fmData,
+  }).then((res) => {
+    userDetails.value = res.data;
+  });
+});
 function updateProfile() {
   const fmData = new FormData(form.value as HTMLFormElement);
-  const teamName = UserStore().teamName;
-  fmData.append("teamName", teamName);
   axios({
     method: "post",
     url: "updateProfile/",
@@ -22,13 +40,35 @@ function updateProfile() {
 
 <template>
   <main class="flex flex-col">
-    <div class="flex-1 self-center flex flex-row lg:w-4/12">
+    <div
+      class="flex-1 self-center flex flex-col space-y-4 lg:flex-row lg:space-x-32"
+    >
+      <table class="bg-black bg-opacity-70 self-center mx-4">
+        <tbody>
+          <tr>
+            <td class="p-1 border">First Name</td>
+            <td class="p-1 border">{{ userDetails?.firstName }}</td>
+          </tr>
+          <tr>
+            <td class="p-1 border">Last Name</td>
+            <td class="p-1 border">{{ userDetails?.lastName }}</td>
+          </tr>
+          <tr>
+            <td class="p-1 border">Email</td>
+            <td class="p-1 border">{{ userDetails?.email }}</td>
+          </tr>
+          <tr>
+            <td class="p-1 border">City</td>
+            <td class="p-1 border">{{ userDetails?.city }}</td>
+          </tr>
+        </tbody>
+      </table>
       <form
         ref="form"
         @submit.prevent="updateProfile"
-        class="bg-black bg-opacity-70 self-center flex flex-col p-4 space-y-2 w-full"
+        class="bg-black bg-opacity-70 self-center flex flex-col p-4 space-y-2"
       >
-        <h2 class="self-center text-3xl">UPDATE ACCOUNT</h2>
+        <h2 class="self-center lg:text-3xl">UPDATE ACCOUNT</h2>
         <div class="flex flex-row justify-between">
           <label for="firstName" class="flex-1">FIRST NAME</label>
           <input
@@ -62,7 +102,7 @@ function updateProfile() {
           />
         </div>
         <button
-          class="border-slate-500 bg-cyan-600 p-2 rounded-xl text-xl w-fit self-center"
+          class="border-slate-500 bg-cyan-600 p-2 rounded-xl lg:text-xl w-fit self-center"
         >
           Submit
         </button>

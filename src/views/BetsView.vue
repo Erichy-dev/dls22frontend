@@ -19,6 +19,13 @@ axios({
 }).then((res) => {
   leagueBets.value = res.data;
 });
+const cupBets: Ref<BetsSchema[] | null> = ref(null);
+axios({
+  method: "get",
+  url: "cupBets/",
+}).then((res) => {
+  cupBets.value = res.data;
+});
 </script>
 
 <template>
@@ -42,7 +49,7 @@ axios({
     <div class="flex-1 flex flex-col" v-if="showBets">
       <div class="flex-1 flex flex-col">
         <div
-          class="flex-1 w-10/12 self-center mt-5 flex flex-row justify-between"
+          class="flex-1 w-10/12 self-center mt-5 flex flex-col lg:flex-row justify-between"
         >
           <div class="w-full flex flex-col">
             <button
@@ -78,12 +85,12 @@ axios({
                   <th class="p-1 border border-zinc-400">AMOUNT</th>
                 </tr>
               </thead>
-              <!-- <tbody>
-                    <tr>
-                      <td class=" p-1"></td>
-                      <td class=" p-1"></td>
-                    </tr>
-                  </tbody> -->
+              <tbody>
+                <tr v-for="bet in cupBets" :key="bet.pk">
+                  <td class="p-1 border">{{ bet.pk }}</td>
+                  <td class="p-1 border">{{ bet.fields.amount }}</td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>

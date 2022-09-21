@@ -116,14 +116,14 @@ function signOut() {
         </router-link>
         <router-link to="/profile" v-if="signedIn">
           <button
-            class="p-1 hover:underline decoration-2 decoration-red-600 font-extrabold rounded-full bg-black bg-opacity-60 text-yellow-300"
+            class="p-1 hover:underline decoration-2 decoration-red-600 font-extrabold rounded-full text-yellow-300"
           >
             {{ teamName }}
           </button>
         </router-link>
         <router-link to="/signOut" @click="signOut">
           <button
-            class="p-1 hover:underline decoration-2 decoration-red-600 font-extrabold rounded-full bg-black bg-opacity-60"
+            class="p-1 hover:underline decoration-2 decoration-red-600 font-extrabold rounded-full"
           >
             SIGN OUT
           </button>
@@ -139,16 +139,3 @@ function signOut() {
     </transition>
   </main>
 </template>
-
-<style scoped>
-.toast-move,
-.toast-enter-active,
-.toast-leave-active {
-  transition: all 1s ease;
-}
-.toast-enter-from,
-.toast-leave-to {
-  opacity: 0;
-  transform: translateY(30px);
-}
-</style>

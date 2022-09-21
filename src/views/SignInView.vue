@@ -20,7 +20,7 @@ function signIn() {
       if (res.data === "valid") {
         UserStore().teamName = teamName.value;
         UserStore().signedIn = true;
-        setCookie("nt", teamName.value, 0.25);
+        setCookie("nt", teamName.value, 1);
         navigate.push("/loggedIn");
       } else {
         invalid.value = true;
@@ -102,16 +102,3 @@ function forgotPassword() {
     </div>
   </main>
 </template>
-
-<style scoped>
-.toast-move,
-.toast-enter-active,
-.toast-leave-active {
-  transition: all 1s ease;
-}
-.toast-enter-from,
-.toast-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
-}
-</style>

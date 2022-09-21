@@ -47,16 +47,16 @@ watchEffect(() => {
 
 <template>
   <main class="flex flex-col">
-    <table class="bg-black bg-opacity-70 self-center">
+    <table class="bg-black bg-opacity-70 self-center w-10/12">
       <thead>
         <tr>
-          <th class="p-1">GAME 0 OF 15</th>
+          <th class="p-1 border border-zinc-400">GAME 0 OF 15</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="fixture in fixtureTable" :key="fixture.teamNames">
-          <td class="p-1">{{ fixture.teamNames }}</td>
-          <td class="p-1">{{ fixture.scores }}</td>
+          <td class="p-1 border">{{ fixture.teamNames }}</td>
+          <td class="p-1 border">{{ fixture.scores }}</td>
         </tr>
       </tbody>
     </table>

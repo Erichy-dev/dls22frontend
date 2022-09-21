@@ -3,6 +3,7 @@ import { ref, watch, type Ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import { UserStore } from "@/stores/UserAccount";
+import { setCookie } from "@/composables/cookies";
 
 // cookie
 
@@ -13,6 +14,7 @@ const teamName = ref("");
 const password1 = ref("");
 const password2 = ref("");
 const invalidInput = ref("");
+const invalid = ref(false);
 const passDontMatch = ref(false);
 
 watch(password2, () => {
@@ -27,22 +29,22 @@ async function createProfile() {
   if (!passDontMatch.value) {
     axios({
       method: "post",
-      url: "http://127.0.0.1:8000/createUser/",
+      url: "createUser/",
       data: new FormData(form.value as HTMLFormElement),
-    })
-      .then((res) => {
-        if (res.data === "valid") {
-          UserStore().teamName = teamName.value;
-          UserStore().signedIn = true;
-          navigate.push("/games");
-        } else {
-          console.log(res.data);
-          invalidInput.value = res.data;
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).then((res) => {
+      if (res.data === "valid") {
+        UserStore().teamName = teamName.value;
+        UserStore().signedIn = true;
+        setCookie("nt", teamName.value, 1);
+        navigate.push("/games");
+      } else {
+        invalidInput.value = Object.keys(res.data).join(",");
+        invalid.value = true;
+        setTimeout(() => {
+          invalid.value = false;
+        }, 5000);
+      }
+    });
   }
 }
 </script>
@@ -174,6 +176,11 @@ async function createProfile() {
         <p v-if="passDontMatch" class="text-red-600 self-center">
           Passwords do not match
         </p>
+        <transition name="toast">
+          <p v-if="invalid" class="text-red-600 self-center text-sm">
+            These fields already exist::: {{ invalidInput }}
+          </p>
+        </transition>
         <div class="self-center flex flex-col space-y-3">
           <button
             class="border-slate-500 bg-cyan-600 p-2 rounded-xl md:text-xl w-fit"
