@@ -20,7 +20,7 @@ function signIn() {
       if (res.data === "valid") {
         UserStore().teamName = teamName.value;
         UserStore().signedIn = true;
-        setCookie("nt", teamName.value, 1);
+        setCookie("nt", teamName.value, 3);
         navigate.push("/loggedIn");
       } else {
         invalid.value = true;

@@ -16,9 +16,9 @@ const signedIn = computed(() => UserStore().signedIn);
           <h1>GAME</h1>
           <h1>COMPETITIONS</h1>
         </div>
-        <router-link to="/signUp" class="self-center z-10" v-if="!signedIn">
+        <router-link to="/signUp" v-if="!signedIn">
           <button
-            class="border border-slate-500 bg-cyan-600 p-2 m-1 rounded-xl mt-20 text-xl w-fit"
+            class="border-slate-500 bg-cyan-600 p-2 m-3 rounded-xl md:text-xl w-fit self-center"
           >
             CREATE ACCOUNT
           </button>

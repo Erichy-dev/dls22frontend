@@ -2,7 +2,7 @@
 import { UserStore } from "@/stores/UserAccount";
 import { computed, ref, onMounted } from "vue";
 import { MenuIcon } from "@heroicons/vue/solid";
-import { getCookie, setCookie } from "@/composables/cookies";
+import { setCookie } from "@/composables/cookies";
 
 const signedIn = computed(() => UserStore().signedIn);
 const teamName = computed(() => UserStore().teamName);
