@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import GamesNavigator from "../../components/GamesNavigator.vue";
 import axios from "axios";
-import { onMounted, ref, type Ref } from "vue";
+import { ref, type Ref } from "vue";
 
 interface FixtureSchema {
   fields: {
@@ -55,12 +55,6 @@ axios({
   }
 });
 
-onMounted(() => {
-  const copyIcon = document.getElementsByTagName("svg")[0];
-  copyIcon.addEventListener("click", () => {
-    //
-  });
-});
 function copyCode(event: Event) {
   const codeid = (event.currentTarget as HTMLElement).id;
   const node = document.getElementById(`${codeid}code`);
@@ -71,13 +65,16 @@ function copyCode(event: Event) {
     range.selectNodeContents(node as HTMLElement);
     (selection as Selection).removeAllRanges();
     (selection as Selection).addRange(range);
-    navigator.clipboard.writeText((selection as Selection).toString());
-
-    const copied = document.getElementById(`${codeid}copied`);
-    copied?.classList.remove("hidden");
-    setTimeout(() => {
-      copied?.classList.add("hidden");
-    }, 2000);
+    navigator.clipboard
+      .writeText((selection as Selection).toString())
+      .then(() => {
+        const copied = document.getElementById(`${codeid}copied`);
+        copied?.classList.remove("hidden");
+        setTimeout(() => {
+          copied?.classList.add("hidden");
+        }, 2000);
+        navigator.clipboard.readText().then((val) => console.log(val));
+      });
   } else {
     console.warn("Could not select text in node: Unsupported browser.");
   }
@@ -107,7 +104,7 @@ function copyCode(event: Event) {
                 code:
                 <span
                   :id="String(fixture.pk) + 'code'"
-                  class="text-red-900 font-black selection:bg-none"
+                  class="text-red-900 font-black selection:bg-blue-300"
                 >
                   {{ fixture.code }}
                 </span>

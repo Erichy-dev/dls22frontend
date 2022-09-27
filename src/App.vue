@@ -6,8 +6,8 @@ import axios from "axios";
 import { getCookie } from "./composables/cookies";
 import { UserStore } from "./stores/UserAccount";
 
-// axios.defaults.baseURL = "https://dogc.pythonanywhere.com/";
-axios.defaults.baseURL = "http://127.0.0.1:8000/";
+axios.defaults.baseURL = "https://dogc.pythonanywhere.com/";
+// axios.defaults.baseURL = "http://127.0.0.1:8000/";
 
 if (getCookie("nt") !== null) {
   const teamName = getCookie("nt");
