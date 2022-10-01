@@ -1,4 +1,6 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import GoogleRecaptcha from "@/components/GoogleRecaptcha.vue";
+</script>
 
 <template>
   <main class="flex flex-col">
@@ -6,7 +8,11 @@
       <div class="self-center flex flex-col w-full bg-black bg-opacity-70">
         <div class="flex flex-row justify-evenly mt-5 p-2">
           <label for="email" class="text-4xl">Email:</label>
-          <input type="email" required />
+          <input
+            type="email"
+            required
+            class="text-black p-1 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:shadow-lg focus:shadow-sky-600 rounded-md focus:ring-1"
+          />
         </div>
         <div class="flex flex-row justify-evenly">
           <label class="text-4xl mt-5" for="message">Send Message:</label>
@@ -16,7 +22,7 @@
             id="message"
             rows="7"
             placeholder="Write here"
-            class="w-6/12 m-5 bg-zinc-400 bg-opacity-70 placeholder-white p-2"
+            class="w-6/12 m-5 text-black p-1 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:shadow-lg focus:shadow-sky-600 rounded-md focus:ring-1"
           ></textarea>
         </div>
         <button
@@ -24,6 +30,7 @@
         >
           Submit
         </button>
+        <GoogleRecaptcha />
       </div>
     </div>
   </main>

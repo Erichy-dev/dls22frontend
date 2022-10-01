@@ -11,6 +11,7 @@ interface FixtureSchema {
     teamBScore: number;
     roundNumber: number;
     time: null | string;
+    created_at: string;
   };
 }
 interface TableSchema {
@@ -20,24 +21,27 @@ interface TableSchema {
   pk: number;
   code: string;
   time: null | string;
+  created_at: string;
 }
+/** used to provide roundTable with new values */
 const fixtureTable: Ref<TableSchema[]> = ref([]);
 const roundTable: Ref<{ table: TableSchema[]; pk: number }[]> = ref([]);
-const leagueFixtures: Ref<FixtureSchema[] | null> = ref(null);
-const lastRound = ref(0);
+/** an array of fixtures inside an array sorted by created_at */
+const leagueFixtures: Ref<FixtureSchema[][] | null> = ref(null);
+/** the number of days of recorded fixtures */
+const totalDates = ref(0);
 axios({
   method: "get",
-  url: "leagueFixtures/",
+  url: "previousLeagueFixtures/",
 }).then((res) => {
   leagueFixtures.value = res.data;
   if (leagueFixtures.value) {
-    lastRound.value =
-      leagueFixtures.value[leagueFixtures.value.length - 1].fields.roundNumber;
-    for (let i = 1; i <= lastRound.value; i++) {
+    totalDates.value = leagueFixtures.value.length;
+    for (let i = 0; i <= totalDates.value; i++) {
       fixtureTable.value = [];
-      for (let j = 0; j < leagueFixtures.value.length; j++) {
-        const fixture = leagueFixtures.value[j].fields;
-        if (fixture.roundNumber !== i) continue;
+      const dateFixtureLength = leagueFixtures.value[i].length;
+      for (let j = 0; j < dateFixtureLength; j++) {
+        const fixture = leagueFixtures.value[i][j].fields;
         const teamNames = fixture.teamA + " Vs " + fixture.teamB;
         const scores = fixture.teamAScore + " - " + fixture.teamBScore;
         const code =
@@ -51,6 +55,7 @@ axios({
           pk: j,
           code: code,
           time: time,
+          created_at: fixture.created_at,
         });
       }
       roundTable.value.push({ table: fixtureTable.value, pk: i });
@@ -61,21 +66,21 @@ axios({
 </script>
 
 <template>
-  <main class="flex flex-col">
+  <main class="flex flex-col min-h-screen">
     <div class="flex-1 flex flex-col">
-      <router-link to="/previousLeagueFixtures" class="w-fit self-end">
-        <button id="wiggle" class="bg-red-700 p-2 mr-6 rounded-md outline-none">
-          Previous Fixtures
-        </button>
-      </router-link>
       <table
         class="bg-black bg-opacity-70 w-11/12 md:w-6/12 self-center border space-y-5 m-2"
         v-for="fixtureTable in roundTable"
         :key="fixtureTable.pk"
       >
-        <thead>
+        <thead class="">
+          <h1 class="m-2 text-sky-500">
+            {{ fixtureTable.table[0].created_at }}
+          </h1>
           <tr class="md:text-xl">
-            <th class="p-1">ROUND {{ fixtureTable.pk }} OF {{ lastRound }}</th>
+            <th class="p-1">
+              GAME {{ fixtureTable.pk + 1 }} OF {{ totalDates }}
+            </th>
             <th class="p-1">SCORE</th>
           </tr>
         </thead>

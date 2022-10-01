@@ -3,6 +3,11 @@ import { UserStore } from "@/stores/UserAccount";
 import axios from "axios";
 import { onMounted, computed, ref, type Ref } from "vue";
 import { useRouter } from "vue-router";
+import GoogleRecaptcha from "../components/GoogleRecaptcha.vue";
+
+import { useReCaptcha } from "vue-recaptcha-v3";
+
+const { executeRecaptcha, recaptchaLoaded } = useReCaptcha();
 
 const navigate = useRouter();
 const form: Ref<HTMLFormElement | null> = ref(null);
@@ -26,7 +31,9 @@ onMounted(() => {
     userDetails.value = res.data;
   });
 });
-function updateProfile() {
+async function updateProfile() {
+  await recaptchaLoaded();
+  const token = await executeRecaptcha("submit");
   const fmData = new FormData(form.value as HTMLFormElement);
   axios({
     method: "post",
@@ -72,7 +79,7 @@ function updateProfile() {
         <div class="flex flex-row justify-between">
           <label for="firstName" class="flex-1">FIRST NAME</label>
           <input
-            class="text-black p-1"
+            class="text-black p-1 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:shadow-lg focus:shadow-sky-600 rounded-md focus:ring-1"
             type="text"
             id="firstName"
             name="firstName"
@@ -81,7 +88,7 @@ function updateProfile() {
         <div class="flex flex-row justify-between">
           <label for="lastName" class="flex-1">LAST NAME</label>
           <input
-            class="text-black p-1"
+            class="text-black p-1 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:shadow-lg focus:shadow-sky-600 rounded-md focus:ring-1"
             type="text"
             id="lastName"
             name="lastName"
@@ -89,12 +96,17 @@ function updateProfile() {
         </div>
         <div class="flex flex-row justify-between">
           <label for="city" class="flex-1">CITY</label>
-          <input class="text-black p-1" type="text" id="city" name="city" />
+          <input
+            class="text-black p-1 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:shadow-lg focus:shadow-sky-600 rounded-md focus:ring-1"
+            type="text"
+            id="city"
+            name="city"
+          />
         </div>
         <div class="flex flex-row justify-between">
           <label for="password" class="flex-1">PASSWORD</label>
           <input
-            class="text-black p-1"
+            class="text-black p-1 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:shadow-lg focus:shadow-sky-600 rounded-md focus:ring-1"
             type="password"
             id="password"
             name="password"
@@ -106,6 +118,7 @@ function updateProfile() {
         >
           Submit
         </button>
+        <GoogleRecaptcha />
       </form>
     </div>
   </main>

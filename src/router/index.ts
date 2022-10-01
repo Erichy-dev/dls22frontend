@@ -27,6 +27,11 @@ const appRoutes = [
     component: () => import("@/views/BetsView.vue"),
   },
   {
+    path: "/previousLeagueFixtures",
+    name: "previousLeagueFixtures",
+    component: () => import("@/views/PreviousLeagueFixtures.vue"),
+  },
+  {
     path: "/about",
     name: "about",
     component: () => import("@/views/AboutView.vue"),

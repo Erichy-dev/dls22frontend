@@ -13,12 +13,18 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.2.0",
+    "@fortawesome/free-brands-svg-icons": "^6.2.0",
+    "@fortawesome/free-regular-svg-icons": "^6.2.0",
+    "@fortawesome/free-solid-svg-icons": "^6.2.0",
+    "@fortawesome/vue-fontawesome": "^3.0.1",
     "@heroicons/vue": "^1.0.6",
     "@quasar/extras": "^1.14.2",
     "axios": "^0.27.2",
     "pinia": "^2.0.14",
     "quasar": "^2.7.5",
     "vue": "^3.2.37",
+    "vue-recaptcha-v3": "^2.0.1",
     "vue-router": "^4.0.16",
     "vue-router-mock": "^0.1.8"
   },

@@ -5,9 +5,7 @@ const UserStore = defineStore({
   state: () => ({
     teamName: "",
     signedIn: false,
-    registerCompetition: true,
     registerLeagueCompetition: true,
-    registerCupCompetition: true,
   }),
 });
 

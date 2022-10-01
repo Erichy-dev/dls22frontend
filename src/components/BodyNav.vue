@@ -2,7 +2,7 @@
 import { UserStore } from "@/stores/UserAccount";
 import { computed, ref, onMounted } from "vue";
 import { MenuIcon } from "@heroicons/vue/solid";
-import { setCookie } from "@/composables/cookies";
+import axios from "axios";
 
 const signedIn = computed(() => UserStore().signedIn);
 const teamName = computed(() => UserStore().teamName);
@@ -52,7 +52,10 @@ if (window.outerWidth >= 768) {
 function signOut() {
   UserStore().teamName = "";
   UserStore().signedIn = false;
-  setCookie("nt", teamName.value, 0.5, true);
+  axios({
+    method: "post",
+    url: "signOut/",
+  });
 }
 </script>
 

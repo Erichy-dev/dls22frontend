@@ -29,6 +29,9 @@ axios({
 <template>
   <main class="flex flex-col">
     <div class="flex-1 flex flex-col">
+      <!-- <button id="wiggle" class="bg-red-700 w-fit p-2 mr-6 rounded-md self-end">
+        Previous Leagues
+      </button> -->
       <table
         class="bg-black bg-opacity-70 w-10/12 self-center mt-5 text-xs md:text-base"
       >

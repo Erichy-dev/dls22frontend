@@ -3,9 +3,10 @@ import { ref, watch, type Ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import { UserStore } from "@/stores/UserAccount";
-import { setCookie } from "@/composables/cookies";
+import GoogleRecaptcha from "../components/GoogleRecaptcha.vue";
+import { useReCaptcha } from "vue-recaptcha-v3";
 
-// cookie
+const { executeRecaptcha, recaptchaLoaded } = useReCaptcha();
 
 const form: Ref<HTMLFormElement | null> = ref(null);
 
@@ -27,6 +28,8 @@ watch(password2, () => {
 
 async function createProfile() {
   if (!passDontMatch.value) {
+    await recaptchaLoaded();
+    const token = await executeRecaptcha("submit");
     axios({
       method: "post",
       url: "createUser/",
@@ -35,7 +38,6 @@ async function createProfile() {
       if (res.data === "valid") {
         UserStore().teamName = teamName.value;
         UserStore().signedIn = true;
-        setCookie("nt", teamName.value, 1);
         navigate.push("/games");
       } else {
         invalidInput.value = Object.keys(res.data).join(",");
@@ -51,12 +53,12 @@ async function createProfile() {
 
 <template>
   <main class="flex flex-col">
-    <div class="flex-1 self-center flex flex-row lg:w-4/12">
+    <div class="flex-1 self-center flex flex-row md:w-6/12 lg:w-4/12">
       <form
         ref="form"
         action=""
         @submit.prevent="createProfile"
-        class="bg-black bg-opacity-70 self-center flex flex-col p-4 space-y-1 w-full"
+        class="bg-black bg-opacity-70 self-center flex flex-col p-4 space-y-1"
       >
         <h2 class="self-center md:text-3xl">CREATE ACCOUNT</h2>
         <!-- <div class="w-6/12 self-center">
@@ -75,7 +77,7 @@ async function createProfile() {
             >TEAM NAME</label
           >
           <input
-            class="text-black p-1"
+            class="text-black p-1 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:shadow-lg focus:shadow-sky-600 rounded-md focus:ring-1"
             type="text"
             v-model="teamName"
             required
@@ -89,7 +91,7 @@ async function createProfile() {
             >FIRST NAME</label
           >
           <input
-            class="text-black p-1"
+            class="text-black p-1 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:shadow-lg focus:shadow-sky-600 rounded-md focus:ring-1"
             type="text"
             required
             placeholder="registered first name"
@@ -102,7 +104,7 @@ async function createProfile() {
             >LAST NAME</label
           >
           <input
-            class="text-black p-1"
+            class="text-black p-1 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:shadow-lg focus:shadow-sky-600 rounded-md focus:ring-1"
             type="text"
             required
             placeholder="registered last name"
@@ -113,7 +115,7 @@ async function createProfile() {
         <div class="flex flex-row justify-between">
           <label for="email" class="flex-1 text-sm md:text-lg">EMAIL</label>
           <input
-            class="text-black p-1"
+            class="text-black p-1 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:shadow-lg focus:shadow-sky-600 rounded-md focus:ring-1"
             type="email"
             required
             placeholder="registered email"
@@ -124,7 +126,7 @@ async function createProfile() {
         <div class="flex flex-row justify-between">
           <label for="city" class="flex-1 text-sm md:text-lg">CITY</label>
           <input
-            class="text-black p-1"
+            class="text-black p-1 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:shadow-lg focus:shadow-sky-600 rounded-md focus:ring-1"
             type="text"
             required
             placeholder="current location"
@@ -137,7 +139,7 @@ async function createProfile() {
             >PHONE NUMBER</label
           >
           <input
-            class="text-black p-1"
+            class="text-black p-1 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:shadow-lg focus:shadow-sky-600 rounded-md focus:ring-1"
             type="tel"
             required
             placeholder="registered phone number"
@@ -150,7 +152,7 @@ async function createProfile() {
             >Password</label
           >
           <input
-            class="text-black p-1"
+            class="text-black p-1 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:shadow-lg focus:shadow-sky-600 rounded-md focus:ring-1"
             type="password"
             v-model="password1"
             required
@@ -164,7 +166,7 @@ async function createProfile() {
             >Password</label
           >
           <input
-            class="text-black p-1"
+            class="text-black p-1 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:shadow-lg focus:shadow-sky-600 rounded-md focus:ring-1"
             type="password"
             v-model="password2"
             required
@@ -196,6 +198,7 @@ async function createProfile() {
             </button>
           </router-link>
         </div>
+        <google-recaptcha />
       </form>
     </div>
   </main>

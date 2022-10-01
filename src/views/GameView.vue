@@ -2,15 +2,12 @@
 import GamesNavigator from "@/components/GamesNavigator.vue";
 import { UserStore } from "@/stores/UserAccount";
 import axios from "axios";
-import { ref, computed, onMounted } from "vue";
+import { computed, onMounted } from "vue";
 
 const teamName = computed(() => UserStore().teamName);
 const signedIn = computed(() => UserStore().signedIn);
 const registerLeagueCompetition = computed(
   () => UserStore().registerLeagueCompetition
-);
-const registerCupCompetition = computed(
-  () => UserStore().registerCupCompetition
 );
 
 onMounted(() => {
@@ -22,15 +19,6 @@ onMounted(() => {
     },
   }).then((res) => {
     if (res.data !== "None") UserStore().registerLeagueCompetition = false;
-  });
-  axios({
-    method: "get",
-    url: "cupRegistration/",
-    params: {
-      teamName: teamName.value,
-    },
-  }).then((res) => {
-    if (res.data !== "None") UserStore().registerCupCompetition = false;
   });
 });
 
@@ -47,23 +35,6 @@ function registerToLeague() {
     })
     .catch();
 }
-function registerToCup() {
-  const fmData = new FormData();
-  fmData.append("teamName", teamName.value);
-  axios({
-    method: "post",
-    url: "cupRegistration/",
-    data: fmData,
-  })
-    .then((res) => {
-      if (res.data !== "None") UserStore().registerCupCompetition = false;
-    })
-    .catch();
-}
-function registerToBoth() {
-  registerToLeague();
-  registerToCup();
-}
 </script>
 
 <template>
@@ -73,11 +44,9 @@ function registerToBoth() {
         <div
           class="self-center w-9/12 lg:w-5/12 bg-black bg-opacity-70 text-xl md:text-2xl rounded-xl p-4 mb-4 shadow-black shadow-xl"
         >
-          Welcome {{ teamName }}. Select the competition you'd like to view.
+          Welcome {{ teamName }}. Select the competition to view.
         </div>
-        <div
-          class="flex flex-row text-xl md:text-3xl self-center justify-between w-11/12"
-        >
+        <div class="text-xl md:text-3xl self-center">
           <div class="flex flex-col">
             <router-link to="/godcLeague">
               <button class="p-4 m-1 bg-black rounded-lg bg-opacity-70">
@@ -92,28 +61,7 @@ function registerToBoth() {
               REGISTER
             </button>
           </div>
-          <div class="flex flex-col">
-            <router-link to="/godcCup">
-              <button class="p-4 m-1 bg-black rounded-lg bg-opacity-70">
-                DOG_C CUP
-              </button>
-            </router-link>
-            <button
-              class="border-slate-500 bg-cyan-600 p-2 rounded-xl text-xl w-fit self-center"
-              v-if="registerCupCompetition && signedIn"
-              @click="registerToCup"
-            >
-              REGISTER
-            </button>
-          </div>
         </div>
-        <button
-          class="border-slate-500 bg-cyan-700 bg-opacity-70 p-2 rounded-xl text-xl w-fit self-center m-4"
-          v-if="registerCupCompetition && registerLeagueCompetition && signedIn"
-          @click="registerToBoth"
-        >
-          REGISTER BOTH
-        </button>
       </div>
     </div>
     <GamesNavigator />

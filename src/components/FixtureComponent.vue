@@ -1,7 +1,11 @@
 <script lang="ts" setup>
 import GamesNavigator from "@/components/GamesNavigator.vue";
 import axios from "axios";
-import { ref, type Ref } from "vue";
+import { defineProps, ref, type Ref } from "vue";
+
+const props = defineProps<{
+  url: string;
+}>();
 
 interface FixtureSchema {
   fields: {
@@ -27,17 +31,15 @@ const leagueFixtures: Ref<FixtureSchema[] | null> = ref(null);
 const lastRound = ref(0);
 axios({
   method: "get",
-  url: "leagueFixtures/",
+  url: props.url,
 }).then((res) => {
   leagueFixtures.value = res.data;
   if (leagueFixtures.value) {
-    lastRound.value =
-      leagueFixtures.value[leagueFixtures.value.length - 1].fields.roundNumber;
+    lastRound.value = leagueFixtures.value.length;
     for (let i = 1; i <= lastRound.value; i++) {
       fixtureTable.value = [];
       for (let j = 0; j < leagueFixtures.value.length; j++) {
         const fixture = leagueFixtures.value[j].fields;
-        if (fixture.roundNumber !== i) continue;
         const teamNames = fixture.teamA + " Vs " + fixture.teamB;
         const scores = fixture.teamAScore + " - " + fixture.teamBScore;
         const code =
@@ -61,13 +63,8 @@ axios({
 </script>
 
 <template>
-  <main class="flex flex-col">
+  <main class="flex flex-col min-h-screen">
     <div class="flex-1 flex flex-col">
-      <router-link to="/previousLeagueFixtures" class="w-fit self-end">
-        <button id="wiggle" class="bg-red-700 p-2 mr-6 rounded-md outline-none">
-          Previous Fixtures
-        </button>
-      </router-link>
       <table
         class="bg-black bg-opacity-70 w-11/12 md:w-6/12 self-center border space-y-5 m-2"
         v-for="fixtureTable in roundTable"
@@ -75,7 +72,7 @@ axios({
       >
         <thead>
           <tr class="md:text-xl">
-            <th class="p-1">ROUND {{ fixtureTable.pk }} OF {{ lastRound }}</th>
+            <th class="p-1">GAME {{ fixtureTable.pk }} OF {{ lastRound }}</th>
             <th class="p-1">SCORE</th>
           </tr>
         </thead>
