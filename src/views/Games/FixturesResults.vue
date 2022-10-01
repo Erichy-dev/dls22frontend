@@ -63,7 +63,7 @@ axios({
 <template>
   <main class="flex flex-col">
     <div class="flex-1 flex flex-col">
-      <router-link to="/previousLeagueFixtures" class="w-fit self-end">
+      <router-link to="/previousFixtures" class="w-fit self-end">
         <button id="wiggle" class="bg-red-700 p-2 mr-6 rounded-md outline-none">
           Previous Fixtures
         </button>

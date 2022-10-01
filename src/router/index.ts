@@ -27,8 +27,8 @@ const appRoutes = [
     component: () => import("@/views/BetsView.vue"),
   },
   {
-    path: "/previousLeagueFixtures",
-    name: "previousLeagueFixtures",
+    path: "/previousFixtures",
+    name: "previousFixtures",
     component: () => import("@/views/PreviousLeagueFixtures.vue"),
   },
   {
