@@ -19,6 +19,8 @@
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@fortawesome/vue-fontawesome": "^3.0.1",
     "@heroicons/vue": "^1.0.6",
+    "@ionic/vue": "^6.2.9",
+    "@ionic/vue-router": "^6.2.9",
     "@quasar/extras": "^1.14.2",
     "axios": "^0.27.2",
     "pinia": "^2.0.14",

@@ -6,6 +6,23 @@ import App from "./App.vue";
 import router from "./router";
 import { VueReCaptcha } from "vue-recaptcha-v3";
 
+import { IonicVue } from "@ionic/vue";
+/* Core CSS required for Ionic components to work properly */
+import "@ionic/vue/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+import "@ionic/vue/css/normalize.css";
+import "@ionic/vue/css/structure.css";
+import "@ionic/vue/css/typography.css";
+
+/* Optional CSS utils that can be commented out */
+import "@ionic/vue/css/padding.css";
+import "@ionic/vue/css/float-elements.css";
+import "@ionic/vue/css/text-alignment.css";
+import "@ionic/vue/css/text-transformation.css";
+import "@ionic/vue/css/flex-utils.css";
+import "@ionic/vue/css/display.css";
+
 /* import the fontawesome core */
 import { library } from "@fortawesome/fontawesome-svg-core";
 
@@ -37,6 +54,7 @@ library.add(
 const app = createApp(App);
 
 app.use(createPinia());
+app.use(IonicVue);
 app.use(router);
 app.use(VueReCaptcha, {
   siteKey: "6LduzTgiAAAAAPHjMOpL2ngMZtR29pWSeQDwSXnO",
@@ -46,4 +64,6 @@ app.use(VueReCaptcha, {
 });
 app.component("font-awesome-icon", FontAwesomeIcon);
 
-app.mount("#app");
+router.isReady().then(() => {
+  app.mount("#app");
+});

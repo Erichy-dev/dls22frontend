@@ -1,5 +1,5 @@
 import HomeViewVue from "@/views/HomeView.vue";
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from "@ionic/vue-router";
 import gameRouters from "./gameRouter";
 
 const appRoutes = [
